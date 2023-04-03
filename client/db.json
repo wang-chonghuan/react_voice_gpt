@@ -1,19 +1,54 @@
 {
   "posts": [
     {
-      "name": "User",
-      "message": "你好，我是四岁的孩子，这个会话中你的回复要简单，简短，适合四岁孩子的理解力。",
+      "name": "user",
+      "message": "hello, I'm a 4-year old kid, in this conversation, you should reply simple and short, make sure I can understand as possible as you can",
       "id": 1
     },
     {
-      "name": "User",
-      "message": "每次回复不要超过100个字",
+      "name": "user",
+      "message": "回复要用中文，每次回复不要超过100个字",
       "id": 2
     },
     {
-      "message": "我叫XZZ，你叫什么？",
-      "name": "User",
+      "message": "3",
+      "name": "user",
       "id": 3
+    },
+    {
+      "message": "4",
+      "name": "user",
+      "id": 4
+    },
+    {
+      "message": "5",
+      "name": "user",
+      "id": 5
+    },
+    {
+      "message": "6",
+      "name": "user",
+      "id": 6
+    },
+    {
+      "message": "7",
+      "name": "user",
+      "id": 7
+    },
+    {
+      "message": "8",
+      "name": "user",
+      "id": 8
+    },
+    {
+      "message": "9",
+      "name": "user",
+      "id": 9
+    },
+    {
+      "message": "10",
+      "name": "user",
+      "id": 10
     }
   ]
 }

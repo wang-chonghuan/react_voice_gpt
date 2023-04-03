@@ -1,12 +1,10 @@
-import {FieldError} from "react-hook-form";
-import exp from "constants";
+import { FieldError } from 'react-hook-form';
 
 type Props = {
   fieldError: FieldError | undefined;
 };
-
-export function ValidationError({fieldError}: Props) {
-  if(!fieldError) {
+export function ValidationError({ fieldError }: Props) {
+  if (!fieldError) {
     return null;
   }
   return (

@@ -1,5 +1,3 @@
-import exp from "constants";
-
 export type PostData = {
   id: number;
   name: string;
@@ -14,4 +12,3 @@ export type NewPostData = {
 export type SavedPostData = {
   id: number;
 };
-
