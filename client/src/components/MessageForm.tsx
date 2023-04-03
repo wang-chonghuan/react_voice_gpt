@@ -6,15 +6,19 @@ type Props = {
   onSave: (newPost: NewPostData) => void;
 };
 export function MessageForm({ onSave }: Props) {
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<NewPostData>();
+
   const fieldStyle = 'flex flex-col mb-2';
+
   function getEditorStyle(fieldError: FieldError | undefined) {
     return fieldError ? 'border-red-500' : '';
   }
+
   return (
     <form noValidate className="border-b py-4" onSubmit={handleSubmit(onSave)}>
       {/*<div className={fieldStyle}>
@@ -50,7 +54,7 @@ export function MessageForm({ onSave }: Props) {
         </button>
         {isSubmitSuccessful && (
           <div role="alert" className="text-green-500 text-xs mt-1">
-            The post was successfully saved
+            The message was successfully sent
           </div>
         )}
       </div>

@@ -1,10 +1,13 @@
-import { PostData } from '../api/types';
+import {ChatHistory, PostData} from '../api/types';
+import {useState} from "react";
 
 type Props = {
   posts: PostData[];
 };
 export function MessageList({ posts }: Props) {
+
   const reversedPosts = [...posts].reverse();
+
   return (
     <ul className="list-none">
       {reversedPosts.map((post) => (
