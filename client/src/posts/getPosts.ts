@@ -22,18 +22,18 @@ export function assertIsPosts(postsData: unknown): asserts postsData is PostData
       throw new Error('id is not a number');
     }
 
-    if (!('title' in post)) {
-      throw new Error('post doesnt contain title');
+    if (!('name' in post)) {
+      throw new Error('post doesnt contain name');
     }
-    if (typeof post.title !== 'string') {
-      throw new Error('title is not a string');
+    if (typeof post.name !== 'string') {
+      throw new Error('name is not a string');
     }
 
-    if (!('description' in post)) {
-      throw new Error('post doesnt contain description');
+    if (!('message' in post)) {
+      throw new Error('post doesnt contain message');
     }
-    if (typeof post.description !== 'string') {
-      throw new Error('description is not a string');
+    if (typeof post.message !== 'string') {
+      throw new Error('message is not a string');
     }
   });
 }

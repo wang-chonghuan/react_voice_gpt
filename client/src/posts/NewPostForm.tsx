@@ -19,7 +19,7 @@ export function NewPostForm({onSave}: Props) {
 
   return (
     <form noValidate className="border-b py-4" onSubmit={handleSubmit(onSave)}>
-      <div className={fieldStyle}>
+      {/*<div className={fieldStyle}>
         <label htmlFor="title">Title</label>
         <input type="text"
                id="title"
@@ -29,17 +29,17 @@ export function NewPostForm({onSave}: Props) {
                })}
         />
         <ValidationError fieldError={errors.title}/>
-      </div>
+      </div>*/}
       <div className={fieldStyle}>
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description">New Message</label>
         <textarea
           id="description"
-          className={getEditorStyle(errors.description)}
-          {...register('description', {
-            required: 'You must enter the description'
+          className={getEditorStyle(errors.message)}
+          {...register('message', {
+            required: 'You must enter the message'
           })}
         />
-        <ValidationError fieldError={errors.description}/>
+        <ValidationError fieldError={errors.message}/>
       </div>
       <div className={fieldStyle}>
         <button type="submit"

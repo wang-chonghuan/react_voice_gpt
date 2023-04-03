@@ -2,13 +2,13 @@ import exp from "constants";
 
 export type PostData = {
   id: number;
-  title: string;
-  description: string;
+  name: string;
+  message: string;
 };
 
 export type NewPostData = {
-  title: string;
-  description: string;
+  name: string;
+  message: string;
 };
 
 export type SavedPostData = {

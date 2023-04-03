@@ -10,10 +10,10 @@ export function PostsList({posts}: Props) {
       posts.map((post) => (
         <li key={post.id} className="border-b py-4">
           <h3 className="text-slate-900 font-bold">
-            {post.title}
+            {post.name}
           </h3>
           <p className="text-slate-900">
-            {post.description}
+            {post.message}
           </p>
         </li>
       ))
