@@ -1,19 +1,16 @@
-import {ChatHistory, PostData} from '../api/types';
-import {useState} from "react";
+import {MessageBody} from "../api/types";
 
 type Props = {
-  posts: PostData[];
+  msgs: MessageBody[];
 };
-export function MessageList({ posts }: Props) {
-
-  const reversedPosts = [...posts].reverse();
+export function MessageList({ msgs }: Props) {
 
   return (
     <ul className="list-none">
-      {reversedPosts.map((post) => (
-        <li key={post.id} className="border-b py-4">
-          <h3 className="text-slate-900 font-bold">{post.name}</h3>
-          <p className=" text-slate-900 ">{post.message}</p>
+      {msgs.map((msgBody) => (
+        <li key={msgBody.datetime} className="border-b py-4">
+          <h3 className="text-slate-900 font-bold">{msgBody.role}</h3>
+          <p className=" text-slate-900 ">{msgBody.content}</p>
         </li>
       ))}
     </ul>

@@ -1,20 +1,20 @@
 import {useEffect, useState} from 'react';
-import {getMessages} from '../api/getMessages';
-import {PostData, NewPostData, ChatHistory} from '../api/types';
+import {retrieveMessages} from '../api/retrieveMessages';
+import {assertIsMessageBody, MessageBody} from '../api/types';
 import {MessageList} from './MessageList';
 import {sendMessage} from '../api/sendMessage';
 import {MessageForm} from './MessageForm';
 
 export function ChatPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState<PostData[]>([]);
-  const [chatHistory, setChatHistory] = useState<ChatHistory>({ messages: [] });
-
+  const [isLoading, setIsLoading] = useState(false);
+  // useState cant monitor an object, bcz its reference is the same?
+  const [msgs, setMsgs] = useState<MessageBody[]>([]);
+/*
   useEffect(() => {
     let cancel = false;
     getMessages().then((data) => {
       if (!cancel) {
-        setPosts(data);
+        setChatHistory(chatHistory.addMessage(data))
         setIsLoading(false);
       }
     });
@@ -22,10 +22,15 @@ export function ChatPage() {
       cancel = true;
     };
   }, []);
-
-  async function handleSave(newPostData: NewPostData) {
-    const newPost = await sendMessage(newPostData);
-    setPosts([...posts, newPost]);
+*/
+  async function handleSave(sendMsgBody: MessageBody) {
+    sendMsgBody.usermId = 1;
+    sendMsgBody.role = 'user';
+    sendMsgBody.datetime = new Date().getTime();
+    const retMsgBody: MessageBody = await sendMessage(sendMsgBody);
+    assertIsMessageBody(retMsgBody);
+    console.log("handleSave retMsgBody: ", retMsgBody);
+    setMsgs([retMsgBody, sendMsgBody, ...msgs]);
   }
 
   if (isLoading) {
@@ -35,7 +40,7 @@ export function ChatPage() {
     <div className="w-96 mx-auto mt-6">
       <h2 className="text-xl text-slate-900 font-bold">GPT Client</h2>
       <MessageForm onSave={handleSave}/>
-      <MessageList posts={posts}/>
+      <MessageList msgs={msgs}/>
     </div>
   );
 }
