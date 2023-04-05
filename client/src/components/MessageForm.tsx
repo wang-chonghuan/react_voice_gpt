@@ -10,6 +10,7 @@ export function MessageForm({ onSave }: Props) {
   const {
     register,
     handleSubmit,
+    reset, // 获取 reset 方法
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<MessageBody>();
 
@@ -19,8 +20,13 @@ export function MessageForm({ onSave }: Props) {
     return fieldError ? 'border-red-500' : '';
   }
 
+  const onSubmit = async (data: MessageBody) => {
+    await onSave(data);
+    reset(); // 提交表单后重置表单
+  };
+
   return (
-    <form noValidate className="border-b py-4" onSubmit={handleSubmit(onSave)}>
+    <form noValidate className="border-b py-4" onSubmit={handleSubmit(onSubmit)}>
       <div className={fieldStyle}>
         <label htmlFor="content">New Message</label>
         <textarea
