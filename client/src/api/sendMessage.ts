@@ -1,20 +1,13 @@
-import {MessageSend, MessageBody} from './types';
+import {MessageBody} from './types';
 
-export async function sendMessage(msgBody: MessageBody): Promise<MessageBody> {
+export async function sendMessage(sendMsgBody: MessageBody): Promise<MessageBody> {
   // pre prcess body
-  const chatMessage: MessageSend = {
-    usermId: msgBody.usermId,
-    message: {
-      role: msgBody.role,
-      content: msgBody.content,
-    },
-  };
-  console.log('Request body:', chatMessage);
+  console.log('Request body:', sendMsgBody);
   // send request
   console.log('Request URL:', process.env.REACT_APP_MAIVC_URL!);
   const response = await fetch(process.env.REACT_APP_MAIVC_URL!, {
     method: 'POST',
-    body: JSON.stringify(chatMessage),
+    body: JSON.stringify(sendMsgBody),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -26,7 +19,8 @@ export async function sendMessage(msgBody: MessageBody): Promise<MessageBody> {
     usermId: 1,
     role: responseBody.role,
     content: responseBody.content,
-    datetime: new Date().getTime()
+    datetime: new Date().getTime(),
+    sessionId: sendMsgBody.sessionId // 返回的sessionId和发送的sessionId一样
   }
   return retMsgBody;
 }

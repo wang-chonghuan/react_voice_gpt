@@ -1,34 +1,10 @@
-import exp from "constants";
-/*
-export type PostData = {
-  id: number;
-  name: string;
-  message: string;
-};
-
-export type NewPostData = {
-  name: string;
-  message: string;
-};
-
-export type SavedPostData = {
-  id: number;
-};
-*/
-export type MessageSend = {
-  usermId: number;
-  message: {
-    role: string;
-    content: string;
-  };
-};
-
 // unified format for chatting message send and recv
 export type MessageBody = {
   usermId: number;
   role: string;
   content: string;
   datetime: number;
+  sessionId: string;
 }
 
 export function assertIsMessageBody(msg: any): asserts msg is MessageBody {
@@ -58,6 +34,10 @@ export function assertIsMessageBody(msg: any): asserts msg is MessageBody {
 
   if (typeof msg.datetime !== 'number') {
     throw new Error('datetime must be a number');
+  }
+
+  if (typeof msg.sessionId !== 'string') {
+    throw new Error('sessionId must be a string');
   }
 }
 

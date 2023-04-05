@@ -7,7 +7,7 @@ export function MessageList({ msgs }: Props) {
 
   const getListItemStyle = (role: string) => {
     return role === "user"
-      ? "bg-gray-100 text-black" // 使用淡灰色背景和黑色文字
+      ? "bg-gray-200 text-black" // 使用淡灰色背景和黑色文字
       : role === "assistant"
         ? "bg-white text-black"
         : "";
