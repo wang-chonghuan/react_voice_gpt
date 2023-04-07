@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
-import {retrieveMessages} from '../api/retrieveMessages';
 import {assertIsMessageBody, MessageBody} from '../api/types';
 import {MessageList} from './MessageList';
 import {sendMessage} from '../api/sendMessage';
 import {MessageForm} from './MessageForm';
 import { v4 as uuidv4 } from 'uuid';
+import {textToSpeech} from "../api/textToSpeech";
 
 export function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +31,13 @@ export function ChatPage() {
 
     // 收到 retMsgBody 后，再将其添加到消息列表中
     setMsgs([retMsgBody, ...msgsWithSend]);
+
+    // 在此处调用 textToSpeech 函数将收到的文本转换为语音
+    try {
+      await textToSpeech(retMsgBody.content, process.env.REACT_APP_AZURE_T2S_KEY!, process.env.REACT_APP_AZURE_ZONE!);
+    } catch (error) {
+      console.error("Error synthesizing speech:", error);
+    }
   }
 
   if (isLoading) {

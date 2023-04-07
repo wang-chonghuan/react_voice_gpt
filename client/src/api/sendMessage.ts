@@ -5,7 +5,7 @@ export async function sendMessage(sendMsgBody: MessageBody): Promise<MessageBody
   console.log('Request body:', sendMsgBody);
   // send request
   console.log('Request URL:', process.env.REACT_APP_MAIVC_URL!);
-  const response = await fetch(process.env.REACT_APP_MAIVC_URL!, {
+  const response = await fetch(process.env.REACT_APP_MAIVC_URL! + 'chat/message', {
     method: 'POST',
     body: JSON.stringify(sendMsgBody),
     headers: {
