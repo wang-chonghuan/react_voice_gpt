@@ -73,6 +73,19 @@ export function AppProvider({children}: Props) {
   // 把这个dispatch传给AppContext.Provider组件（其实就是上下文组件），这个组件再包裹app原有的根组件
   // 这样，根组件树上的所有组件，都能读取到dispatch函数了，同时也能读到user permission状态了。
   const [{user, permissions, loading}, dispatch] = useReducer(reducer, initialState);
+
+  // 检查sessionStorage中是否存在jwt和username
+  const savedJwt = sessionStorage.getItem('jwt');
+  const savedUsername = sessionStorage.getItem('username');
+
+  // 如果它们存在，设置它们作为initialState的初始值
+  if (savedJwt && savedUsername) {
+    console.log("AppProvider get saved user: ", savedUsername + ' ' + savedJwt);
+    initialState.user = { username: savedUsername, jwt: savedJwt };
+  } else {
+    console.log("AppProvider NO saved user");
+  }
+
   return (
     <AppContext.Provider
       value={{

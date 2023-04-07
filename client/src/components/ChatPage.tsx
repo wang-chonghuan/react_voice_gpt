@@ -17,6 +17,14 @@ export function ChatPage() {
   const {user} = useAppContext();
 
   async function handleSave(sendMsgBody: MessageBody) {
+
+    // 检查user中的jwt是否存在
+    if (!user || !user.jwt) {
+      // 如果不存在，直接返回一个已解析的Promise
+      console.log("no user info stored, cant send msg");
+      return Promise.resolve();
+    }
+
     sendMsgBody.usermId = 1;
     sendMsgBody.role = 'user';
     sendMsgBody.datetime = new Date().getTime();

@@ -25,7 +25,7 @@ function SignInPage() {
   // 用户按登录按钮时，调用这个函数，是异步的，界面不会卡住
   const login = async () => {
     try {
-      console.log('login before fetch v5: ', userReq);
+      console.log('login before fetch v6: ', userReq);
       // 设置全局状态，进入正在认证状态
       dispatch({type: 'authenticate'});
       const response = await fetch(process.env.REACT_APP_MAIVC_URL! + 'login', {
@@ -44,7 +44,8 @@ function SignInPage() {
       const jwtToken = response.headers.get('Authorization');
       if (jwtToken !== null) {
         console.log('Authorization jwt success: ', sessionStorage.getItem('jwt'));
-        // 把jwt存储在本地session里
+        // 把用户名和jwt存储在本地session里，供下次开新窗口时使用，避免再次登录
+        sessionStorage.setItem('username', userReq.username);
         sessionStorage.setItem('jwt', jwtToken);
         // 构造一个User对象，保存进context里，供其他地方使用
         // 注意，是通过dispatch存进context，同时设置了全局状态为已登录
