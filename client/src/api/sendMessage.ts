@@ -1,6 +1,6 @@
 import {MessageBody} from './types';
 
-export async function sendMessage(sendMsgBody: MessageBody): Promise<MessageBody> {
+export async function sendMessage(sendMsgBody: MessageBody, jwt: string): Promise<MessageBody> {
   // pre prcess body
   console.log('Request body:', sendMsgBody);
   // send request
@@ -10,6 +10,7 @@ export async function sendMessage(sendMsgBody: MessageBody): Promise<MessageBody
     body: JSON.stringify(sendMsgBody),
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': jwt
     },
   });
   // post process body

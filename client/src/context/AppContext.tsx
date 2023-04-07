@@ -1,8 +1,8 @@
-import { createContext, useContext, useReducer, ReactNode } from 'react';
-import {UserReq} from "./authenticate";
+import {createContext, useContext, useReducer, ReactNode} from 'react';
+import {User} from './authenticate';
 
 type State = {
-  user: undefined | UserReq;
+  user: undefined | User;
   permissions: undefined | string[];
   loading: boolean;
 };
@@ -12,21 +12,20 @@ const initialState: State = {
   loading: false,
 };
 
-type Action =
-  | {
+type Action = | {
+  type: 'unauthenticated';
+} | {
   type: 'authenticate';
-}
-  | {
+} | {
   type: 'authenticated';
-  user: UserReq | undefined;
-}
-  | {
+  user: User | undefined;
+} | {
   type: 'authorize';
-}
-  | {
+} | {
   type: 'authorized';
   permissions: string[];
 };
+
 /**
  * @param state 当前的状态
  * @param action 要对当前状态做什么修改
@@ -36,12 +35,14 @@ type Action =
  */
 function reducer(state: State, action: Action): State {
   switch (action.type) {
+    case 'unauthenticated':
+      return {...state, loading: false};
     case 'authenticate':
-      return { ...state, loading: true };
+      return {...state, loading: true};
     case 'authenticated':
-      return { ...state, loading: false, user: action.user };
+      return {...state, loading: false, user: action.user};
     case 'authorize':
-      return { ...state, loading: true };
+      return {...state, loading: true};
     case 'authorized':
       return {
         ...state,
@@ -58,18 +59,20 @@ type AppContextType = State & {
 };
 const AppContext = createContext<AppContextType>({
   ...initialState,
-  dispatch: () => {},
+  dispatch: () => {
+  },
 });
 
 type Props = {
   children: ReactNode;
 };
-export function AppProvider({ children }: Props) {
+
+export function AppProvider({children}: Props) {
   // 用上面定义好的reducer函数来构造useReducer，
   // 生成出来的dispatch对象，包含了reducer里的功能，供外部使用，作用是用action修改状态
   // 把这个dispatch传给AppContext.Provider组件（其实就是上下文组件），这个组件再包裹app原有的根组件
   // 这样，根组件树上的所有组件，都能读取到dispatch函数了，同时也能读到user permission状态了。
-  const [{ user, permissions, loading }, dispatch] = useReducer(reducer, initialState);
+  const [{user, permissions, loading}, dispatch] = useReducer(reducer, initialState);
   return (
     <AppContext.Provider
       value={{
