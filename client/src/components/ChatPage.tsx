@@ -56,7 +56,6 @@ export function ChatPage() {
   }
   return (
     <div className="w-96 mx-auto mt-6">
-      <h2 className="text-xl text-slate-900 font-bold">Shell GPT</h2>
       <MessageForm onSave={handleSave}/>
       <MessageList msgs={msgs}/>
     </div>

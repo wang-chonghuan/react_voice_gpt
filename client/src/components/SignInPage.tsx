@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import {User, UserReq, useAppContext} from "../context/AppContext";
 import {authorize} from "../context/authorize";
+import { useNavigate } from 'react-router-dom';
 
 function SignInPage() {
 
@@ -15,6 +16,8 @@ function SignInPage() {
   });
   const [isAuthenticated, setAuth] = useState(false);
   const {user, loading, dispatch} = useAppContext();
+  // 用于登录成功后导航到聊天页面
+  const navigate = useNavigate();
 
   // 用户输入时，填充UserReq
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +60,8 @@ function SignInPage() {
         dispatch({type: 'authorize'});
         const authorizedPermissions = await authorize(userRes.username);
         dispatch({type: 'authorized', permissions: authorizedPermissions});
+        // 跳转到聊天页面
+        navigate(`/chatpage`);
       } else {
         console.log('Authorization jwt is null');
         dispatch({type: 'unauthenticated'});
@@ -86,7 +91,7 @@ function SignInPage() {
           onClick={login}>
           {loading ? '...' : 'Sign In'}
         </Button>
-        {user ? (<span className="ml-auto font-bold">{user.username} has signed in</span>) : (<></>)}
+        {/*user ? (<span className="ml-auto font-bold">{user.username} has signed in</span>) : (<></>)*/}
       </Stack>
     </div>
   );
