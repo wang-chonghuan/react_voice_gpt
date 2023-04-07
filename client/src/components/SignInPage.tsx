@@ -3,8 +3,7 @@ import React, {useState} from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import {User, UserReq} from "../context/authenticate";
-import {useAppContext} from "../context/AppContext";
+import {User, UserReq, useAppContext} from "../context/AppContext";
 import {authorize} from "../context/authorize";
 
 function SignInPage() {
@@ -43,10 +42,10 @@ function SignInPage() {
       // 登录请求结束，从返回结果里取出jwt供后续访问其他接口使用
       const jwtToken = response.headers.get('Authorization');
       if (jwtToken !== null) {
-        console.log('Authorization jwt success: ', sessionStorage.getItem('jwt'));
+        console.log('Authorization jwt success: ', localStorage.getItem('jwt'));
         // 把用户名和jwt存储在本地session里，供下次开新窗口时使用，避免再次登录
-        sessionStorage.setItem('username', userReq.username);
-        sessionStorage.setItem('jwt', jwtToken);
+        localStorage.setItem('username', userReq.username);
+        localStorage.setItem('jwt', jwtToken);
         // 构造一个User对象，保存进context里，供其他地方使用
         // 注意，是通过dispatch存进context，同时设置了全局状态为已登录
         const userRes: User = {
