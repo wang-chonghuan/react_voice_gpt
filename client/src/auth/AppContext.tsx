@@ -1,4 +1,5 @@
 import {createContext, useContext, useReducer, ReactNode} from 'react';
+import {validateTokenOnServer} from "./validateToken";
 
 // 这个类型是用户输入进来的，用户后续的登录
 export interface UserReq {
@@ -87,18 +88,28 @@ export function AppProvider({children}: Props) {
   // 这样，根组件树上的所有组件，都能读取到dispatch函数了，同时也能读到user permission状态了。
   const [{user, permissions, loading}, dispatch] = useReducer(reducer, initialState);
 
-  // 检查localStorage中是否存在jwt和username
-  // 必须用localStorage否则标签页关闭，数据就清空了
-  const savedJwt = localStorage.getItem('jwt');
-  const savedUsername = localStorage.getItem('username');
-
+  // 检查localStorage中是否存在jwt和username,必须用localStorage否则标签页关闭，数据就清空了
+  // 初始化AppProvider时，到服务端验证jwt是否有效，验证成功以后，页面跳转时就不再到服务端验证了。
   // 如果它们存在，设置它们作为initialState的初始值
-  if (savedJwt && savedUsername) {
-    console.log("AppProvider get saved user: ", savedUsername + ' ' + savedJwt);
-    initialState.user = { username: savedUsername, jwt: savedJwt };
-  } else {
-    console.log("AppProvider NO saved user");
-  }
+  const validateAndSetInitialState = async () => {
+    const savedJwt = localStorage.getItem('jwt');
+    const savedUsername = localStorage.getItem('username');
+
+    if (savedJwt && savedUsername) {
+      const isValid = await validateTokenOnServer(savedJwt);
+      if (isValid) {
+        console.log("AppProvider get saved user: ", savedUsername + ' ' + savedJwt);
+        initialState.user = { username: savedUsername, jwt: savedJwt };
+      } else {
+        console.log("AppProvider INVALID saved user");
+        initialState.user = undefined;
+      }
+    } else {
+      console.log("AppProvider NO saved user");
+    }
+  };
+
+  validateAndSetInitialState();
 
   return (
     <AppContext.Provider

@@ -3,8 +3,10 @@ import React, {useState} from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import {User, UserReq, useAppContext} from "../context/AppContext";
-import {authorize} from "../context/authorize";
+import Snackbar from '@mui/material/Snackbar'
+
+import {User, UserReq, useAppContext} from "../auth/AppContext";
+import {authorize} from "../auth/authorize";
 import { useNavigate } from 'react-router-dom';
 
 function SignInPage() {
@@ -15,6 +17,7 @@ function SignInPage() {
     password: ''
   });
   const [isAuthenticated, setAuth] = useState(false);
+  const [open, setOpen] = useState(false);
   const {user, loading, dispatch} = useAppContext();
   // 用于登录成功后导航到聊天页面
   const navigate = useNavigate();
@@ -37,8 +40,7 @@ function SignInPage() {
       });
       console.log('login Response:', response);
       if (response.status === 401) {
-        console.log('Login failed: Unauthorized');
-        dispatch({ type: 'unauthenticated' });
+        loginFailed('Login failed: Unauthorized');
         return;
       }
 
@@ -63,18 +65,22 @@ function SignInPage() {
         // 跳转到聊天页面
         navigate(`/chatpage`);
       } else {
-        console.log('Authorization jwt is null');
-        dispatch({type: 'unauthenticated'});
+        loginFailed('Authorization jwt is null');
       }
     } catch (e) {
-      console.log('login error:', e);
-      dispatch({ type: 'unauthenticated' });
+      loginFailed(e);
     }
   };
 
+  function loginFailed(errMsg: any) {
+    console.log('login failed:', errMsg);
+    dispatch({type: 'unauthenticated'});
+    setOpen(true);
+  }
+
   return (
     <div>
-      <Stack spacing={2} alignItems='center' mt={2}>
+      <Stack spacing={2} alignItems='center' mt={6}>
         <TextField
           name="username"
           label="Username"
@@ -85,13 +91,20 @@ function SignInPage() {
           label="Password"
           onChange={handleChange}/>
         <Button
-          variant="outlined"
+          variant="contained"
           color="primary"
           disabled={loading}
           onClick={login}>
           {loading ? '...' : 'Sign In'}
         </Button>
         {/*user ? (<span className="ml-auto font-bold">{user.username} has signed in</span>) : (<></>)*/}
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          onClose={() => setOpen(false)}
+          message="Login failed: Check your username and password"
+
+        />
       </Stack>
     </div>
   );

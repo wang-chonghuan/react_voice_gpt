@@ -2,7 +2,7 @@ import {ChatPage} from './components/ChatPage';
 import {HeaderBar} from './components/HeaderBar';
 import SpeechTestPage from "./components/SpeechTestPage";
 import SignInPage from "./components/SignInPage";
-import {AppProvider} from "./context/AppContext";
+import {AppProvider} from "./auth/AppContext";
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -26,12 +26,12 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <div className="min-w-[240px] min-h-screen">
       <AppProvider>
-        <HeaderBar/>
+        <HeaderBar />
         <RouterProvider router={router} />
       </AppProvider>
-    </>
+    </div>
   );
 }
 

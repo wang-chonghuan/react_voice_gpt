@@ -5,7 +5,7 @@ import {sendMessage} from '../api/sendMessage';
 import {MessageForm} from './MessageForm';
 import {v4 as uuidv4} from 'uuid';
 import {textToSpeech} from "../api/textToSpeech";
-import {useAppContext} from "../context/AppContext";
+import {useAppContext} from "../auth/AppContext";
 
 export function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);

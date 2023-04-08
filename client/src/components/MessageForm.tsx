@@ -1,6 +1,7 @@
 import { FieldError, useForm } from 'react-hook-form';
 import { ValidationError } from './ValidationError';
 import {MessageBody} from '../api/types';
+import Button from "@mui/material/Button";
 
 type Props = {
   onSave: (sendMsgBody: MessageBody) => void;
@@ -26,9 +27,8 @@ export function MessageForm({ onSave }: Props) {
   };
 
   return (
-    <form noValidate className="border-b py-4" onSubmit={handleSubmit(onSubmit)}>
+    <form noValidate className="border-b py-0 my-0" onSubmit={handleSubmit(onSubmit)}>
       <div className={fieldStyle}>
-        <label htmlFor="content">New Message</label>
         <textarea
           id="content"
           {...register('content', {
@@ -39,18 +39,20 @@ export function MessageForm({ onSave }: Props) {
         <ValidationError fieldError={errors.content} />
       </div>
       <div className={fieldStyle}>
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           type="submit"
           disabled={isSubmitting}
-          className="mt-2 h-10 px-6 font-semibold bg-black text-white"
+          className="mt-2 h-10 px-6 font-semibold bg-black text-white w-full"
         >
           Send
-        </button>
-        {isSubmitSuccessful && (
+        </Button>
+        {/*isSubmitSuccessful && (
           <div role="alert" className="text-green-500 text-xs mt-1">
             The message was successfully sent
           </div>
-        )}
+        )*/}
       </div>
     </form>
   );
