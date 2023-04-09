@@ -102,7 +102,7 @@ export function AppProvider({children}: Props) {
     const savedUsername = localStorage.getItem('username');
 
     if (savedJwt && savedUsername) {
-      const isValid = await validateTokenOnServer(savedJwt);
+      const isValid = await validateTokenOnServer(savedUsername, savedJwt);
       if (isValid) {
         console.log("AppProvider get saved user: ", savedUsername + ' ' + savedJwt);
         initialState.user = { username: savedUsername, jwt: savedJwt };
