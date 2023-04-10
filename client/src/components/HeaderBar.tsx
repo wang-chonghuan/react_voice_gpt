@@ -14,7 +14,7 @@ export function HeaderBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" noWrap>
-            GPT Client
+            VoiceGPT
           </Typography>
         </Toolbar>
       </AppBar>

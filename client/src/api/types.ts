@@ -1,6 +1,6 @@
 // unified format for chatting message send and recv
 export type MessageBody = {
-  usermId: number;
+  username: string;
   role: string;
   content: string;
   datetime: number;
@@ -20,8 +20,8 @@ export function assertIsMessageBody(msg: any): asserts msg is MessageBody {
     throw new Error('msg must be a non-null object');
   }
 
-  if (typeof msg.usermId !== 'number') {
-    throw new Error('usermId must be a number');
+  if (typeof msg.username !== 'string') {
+    throw new Error('username must be a string');
   }
 
   if (typeof msg.role !== 'string') {

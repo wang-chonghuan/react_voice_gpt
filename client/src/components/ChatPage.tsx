@@ -25,7 +25,7 @@ export function ChatPage() {
       return Promise.resolve();
     }
 
-    sendMsgBody.usermId = 1;
+    sendMsgBody.username = user.username;
     sendMsgBody.role = 'user';
     sendMsgBody.datetime = new Date().getTime();
     sendMsgBody.sessionId = sessionId;

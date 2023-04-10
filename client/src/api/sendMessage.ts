@@ -17,7 +17,7 @@ export async function sendMessage(sendMsgBody: MessageBody, jwt: string): Promis
   const responseBody = (await response.json()) as any;
   console.log('Response body:', responseBody);
   const retMsgBody: MessageBody = {
-    usermId: 1,
+    username: responseBody.username,
     role: responseBody.role,
     content: responseBody.content,
     datetime: new Date().getTime(),
