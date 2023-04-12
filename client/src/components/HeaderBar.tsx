@@ -1,4 +1,4 @@
-import {AppBar, Typography} from "@mui/material";
+import {AppBar, Box, Typography} from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import React from "react";
 
@@ -10,12 +10,21 @@ import React from "react";
  */
 export function HeaderBar() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+    <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" noWrap>
-            VoiceGPT
-          </Typography>
+          <Box display="flex" alignItems="baseline">
+            <Typography variant="h5" className="text-yellow-300 font-bold mr-4" noWrap>
+              MultiPal.AI
+            </Typography>
+            <Box display="flex" flexDirection="column">
+              <Typography variant="caption" noWrap>
+                <span className="ml-3 text-base">
+                  Bots with Voice
+                </span>
+              </Typography>
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
     </div>
