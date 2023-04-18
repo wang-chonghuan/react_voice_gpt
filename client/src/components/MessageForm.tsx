@@ -2,18 +2,35 @@ import { FieldError, useForm } from 'react-hook-form';
 import { ValidationError } from './ValidationError';
 import {MessageBody} from '../api/types';
 import Button from "@mui/material/Button";
+import {useAppContext} from "../auth/AppContext";
+import {ChangeEvent, useEffect, useState} from "react";
 
 type Props = {
   onSave: (sendMsgBody: MessageBody) => void;
 };
 export function MessageForm({ onSave }: Props) {
-
+  const {prompt} = useAppContext();
   const {
     register,
     handleSubmit,
     reset, // 获取 reset 方法
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<MessageBody>();
+
+  const [textAreaValue, setTextAreaValue] = useState(prompt);
+
+  useEffect(() => {
+    setTextAreaValue(prompt);
+  }, [prompt]);
+
+  const { onChange: onRegisterChange, ...registerProps } = register('content', {
+    required: 'You must enter the message',
+  });
+
+  const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onRegisterChange(e);
+    setTextAreaValue(e.target.value);
+  };
 
   const fieldStyle = 'flex flex-col mb-2';
 
@@ -31,23 +48,21 @@ export function MessageForm({ onSave }: Props) {
       <div className={fieldStyle}>
         <textarea
           id="content"
-          {...register('content', {
-            required: 'You must enter the message',
-          })}
+          value={textAreaValue}
+          onChange={handleTextareaChange}
+          {...registerProps}
           className={getEditorStyle(errors.content)}
         />
         <ValidationError fieldError={errors.content} />
       </div>
       <div className={fieldStyle}>
-        <Button
-          variant="contained"
-          color="primary"
+        <button
           type="submit"
           disabled={isSubmitting}
-          className="mt-2 h-10 px-6 font-semibold bg-black text-white w-full"
+          className="btn btn-primary"
         >
           Send
-        </Button>
+        </button>
         {/*isSubmitSuccessful && (
           <div role="alert" className="text-green-500 text-xs mt-1">
             The message was successfully sent

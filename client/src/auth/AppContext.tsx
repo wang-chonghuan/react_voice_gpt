@@ -18,12 +18,14 @@ type State = {
   user: undefined | User;
   permissions: undefined | string[];
   loading: boolean;
+  prompt: string;
 };
 
 const initialState: State = {
   user: undefined,
   permissions: undefined,
   loading: false,
+  prompt: ''
 };
 
 type Action = | {
@@ -38,6 +40,9 @@ type Action = | {
 } | {
   type: 'authorized';
   permissions: string[];
+} | {
+  type: 'updatePrompt';
+  prompt: string;
 };
 
 /**
@@ -63,6 +68,8 @@ function reducer(state: State, action: Action): State {
         loading: false,
         permissions: action.permissions,
       };
+    case 'updatePrompt':
+      return {...state, prompt: action.prompt};
     default:
       return state;
   }
@@ -70,11 +77,14 @@ function reducer(state: State, action: Action): State {
 
 type AppContextType = State & {
   dispatch: React.Dispatch<Action>;
+  updatePrompt: (prompt: string) => void;
 };
 const AppContext = createContext<AppContextType>({
   ...initialState,
   dispatch: () => {
   },
+  updatePrompt: (prompt: string) => {
+  }
 });
 
 type Props = {
@@ -86,7 +96,7 @@ export function AppProvider({children}: Props) {
   // 生成出来的dispatch对象，包含了reducer里的功能，供外部使用，作用是用action修改状态
   // 把这个dispatch传给AppContext.Provider组件（其实就是上下文组件），这个组件再包裹app原有的根组件
   // 这样，根组件树上的所有组件，都能读取到dispatch函数了，同时也能读到user permission状态了。
-  const [{user, permissions, loading}, dispatch] = useReducer(reducer, initialState);
+  const [{user, permissions, loading, prompt}, dispatch] = useReducer(reducer, initialState);
   //
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -132,13 +142,19 @@ export function AppProvider({children}: Props) {
     return null; // 在完成初始化之前，不要渲染应用的其他部分
   }
 
+  const updatePrompt = (prompt: string) => {
+    dispatch({ type: 'updatePrompt', prompt });
+  };
+
   return (
     <AppContext.Provider
       value={{
         user,
         permissions,
         loading,
+        prompt,
         dispatch,
+        updatePrompt
       }}
     >
       {children}

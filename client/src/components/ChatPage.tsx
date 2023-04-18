@@ -14,7 +14,7 @@ export function ChatPage() {
   // 我们使用useState钩子初始化一个sessionId状态变量，并在组件的初始渲染时调用uuidv4()生成唯一的会话ID。这样，在每次用户访问URL时，都会创建一个新的会话ID。
   const [sessionId] = useState(uuidv4());
   // 从context中取出user对象，目的是获得用户的jwt用于访问其他接口
-  const {user} = useAppContext();
+  const {user, prompt} = useAppContext();
 
   async function handleSave(sendMsgBody: MessageBody) {
 
@@ -36,6 +36,7 @@ export function ChatPage() {
     // 先将 sendMsgBody 添加到消息列表中
     setMsgs(msgsWithSend);
 
+    console.log("print if there is prompt: ", prompt);
     const retMsgBody: MessageBody = await sendMessage(sendMsgBody, user!.jwt);
     assertIsMessageBody(retMsgBody);
     console.log("handleSave retMsgBody: ", retMsgBody);
