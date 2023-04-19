@@ -1,4 +1,4 @@
-import {UserReq} from "./AppContext";
+import {UserReq} from "../store/userSlice";
 
 export function authenticate(): Promise<UserReq | undefined> {
   return new Promise(

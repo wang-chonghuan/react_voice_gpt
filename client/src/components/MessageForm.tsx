@@ -1,15 +1,17 @@
 import { FieldError, useForm } from 'react-hook-form';
 import { ValidationError } from './ValidationError';
 import {MessageBody} from '../api/types';
-import Button from "@mui/material/Button";
-import {useAppContext} from "../auth/AppContext";
 import {ChangeEvent, useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState, store} from "../store/store";
+import {updatePromptAction} from "../store/promptSlice";
 
 type Props = {
   onSave: (sendMsgBody: MessageBody) => void;
 };
 export function MessageForm({ onSave }: Props) {
-  const {prompt} = useAppContext();
+  const prompt = useSelector((state: RootState) => state.prompt.prompt);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -40,6 +42,7 @@ export function MessageForm({ onSave }: Props) {
 
   const onSubmit = async (data: MessageBody) => {
     await onSave(data);
+    dispatch(updatePromptAction(""));
     reset(); // 提交表单后重置表单
   };
 
@@ -63,11 +66,6 @@ export function MessageForm({ onSave }: Props) {
         >
           Send
         </button>
-        {/*isSubmitSuccessful && (
-          <div role="alert" className="text-green-500 text-xs mt-1">
-            The message was successfully sent
-          </div>
-        )*/}
       </div>
     </form>
   );

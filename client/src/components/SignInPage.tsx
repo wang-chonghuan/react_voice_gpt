@@ -5,9 +5,19 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar'
 
-import {User, UserReq, useAppContext} from "../auth/AppContext";
 import {authorize} from "../auth/authorize";
 import { useNavigate } from 'react-router-dom';
+import {
+  authenticateAction,
+  authenticatedAction,
+  authorizeAction,
+  authorizedAction, unauthenticatedAction,
+  User,
+  UserReq
+} from "../store/userSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../store/store";
+import {authenticate} from "../auth/authenticate";
 
 function SignInPage() {
 
@@ -16,9 +26,10 @@ function SignInPage() {
     username: '',
     password: ''
   });
-  const [isAuthenticated, setAuth] = useState(false);
   const [open, setOpen] = useState(false);
-  const {user, loading, dispatch} = useAppContext();
+
+  const loading = useSelector((state: RootState) => state.user.loading);
+  const dispatch = useDispatch();
   // 用于登录成功后导航到聊天页面
   const navigate = useNavigate();
 
@@ -32,7 +43,7 @@ function SignInPage() {
     try {
       console.log('login before fetch v6: ', userReq);
       // 设置全局状态，进入正在认证状态
-      dispatch({type: 'authenticate'});
+      dispatch(authenticateAction());
       const response = await fetch(process.env.REACT_APP_MAIVC_URL! + 'login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -57,11 +68,11 @@ function SignInPage() {
           username: userReq.username,
           jwt: jwtToken
         };
-        dispatch({type: 'authenticated', user: userRes});
+        dispatch(authenticatedAction(userRes));
         // 设置权限，比如未付费用户和付费用户的权限，但是暂不实现该功能
-        dispatch({type: 'authorize'});
+        dispatch(authorizeAction());
         const authorizedPermissions = await authorize(userRes.username);
-        dispatch({type: 'authorized', permissions: authorizedPermissions});
+        dispatch(authorizedAction(authorizedPermissions));
         // 跳转到聊天页面
         navigate(`/chatpage`);
       } else {
@@ -74,7 +85,7 @@ function SignInPage() {
 
   function loginFailed(errMsg: any) {
     console.log('login failed:', errMsg);
-    dispatch({type: 'unauthenticated'});
+    dispatch(unauthenticatedAction());
     setOpen(true);
   }
 
@@ -103,7 +114,6 @@ function SignInPage() {
           autoHideDuration={3000}
           onClose={() => setOpen(false)}
           message="Login failed: Check your username and password"
-
         />
       </Stack>
     </div>

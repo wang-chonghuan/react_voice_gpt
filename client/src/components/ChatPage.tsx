@@ -5,7 +5,8 @@ import {sendMessage} from '../api/sendMessage';
 import {MessageForm} from './MessageForm';
 import {v4 as uuidv4} from 'uuid';
 import {textToSpeech} from "../api/textToSpeech";
-import {useAppContext} from "../auth/AppContext";
+import {useSelector} from "react-redux";
+import {RootState} from "../store/store";
 
 export function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +15,7 @@ export function ChatPage() {
   // 我们使用useState钩子初始化一个sessionId状态变量，并在组件的初始渲染时调用uuidv4()生成唯一的会话ID。这样，在每次用户访问URL时，都会创建一个新的会话ID。
   const [sessionId] = useState(uuidv4());
   // 从context中取出user对象，目的是获得用户的jwt用于访问其他接口
-  const {user, prompt} = useAppContext();
+  const user = useSelector((state: RootState) => state.user.user);
 
   async function handleSave(sendMsgBody: MessageBody) {
 
@@ -36,7 +37,6 @@ export function ChatPage() {
     // 先将 sendMsgBody 添加到消息列表中
     setMsgs(msgsWithSend);
 
-    console.log("print if there is prompt: ", prompt);
     const retMsgBody: MessageBody = await sendMessage(sendMsgBody, user!.jwt);
     assertIsMessageBody(retMsgBody);
     console.log("handleSave retMsgBody: ", retMsgBody);
