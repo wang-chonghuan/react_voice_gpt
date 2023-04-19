@@ -11,7 +11,9 @@ function App() {
       <Provider store={store}>
         <AuthProvider>
           <HeaderBar/>
-          <RouterProvider router={router}/>
+          <div className="container flex flex-col justify-start items-center mx-auto">
+            <RouterProvider router={router}/>
+          </div>
         </AuthProvider>
       </Provider>
     </div>

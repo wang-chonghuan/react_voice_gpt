@@ -1,10 +1,5 @@
 import React, {useState} from "react";
 
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar'
-
 import {authorize} from "../auth/authorize";
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,7 +12,7 @@ import {
 } from "../store/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store/store";
-import {authenticate} from "../auth/authenticate";
+import Alert from "./Alert";
 
 function SignInPage() {
 
@@ -26,7 +21,7 @@ function SignInPage() {
     username: '',
     password: ''
   });
-  const [open, setOpen] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const loading = useSelector((state: RootState) => state.user.loading);
   const dispatch = useDispatch();
@@ -84,38 +79,47 @@ function SignInPage() {
   };
 
   function loginFailed(errMsg: any) {
-    console.log('login failed:', errMsg);
+    console.log('loginFailed:', errMsg);
     dispatch(unauthenticatedAction());
-    setOpen(true);
+    // 这里set之后，没有再set回去，所以下次就不会再弹出了，因为状态没变！
+    setShowAlert(true);
   }
 
   return (
-    <div>
-      <Stack spacing={2} alignItems='center' mt={6}>
-        <TextField
+    <div className="container mt-10 gap-y-8 flex flex-col justify-center items-center">
+        <input
           name="username"
-          label="Username"
-          onChange={handleChange}/>
-        <TextField
-          type="password"
+          type="text"
+          placeholder="Username"
+          onChange={handleChange}
+          className="input input-bordered w-full max-w-xs"
+        />
+        <input
           name="password"
-          label="Password"
-          onChange={handleChange}/>
-        <Button
-          variant="contained"
-          color="primary"
+          type="password"
+          placeholder="Password"
+          onChange={handleChange}
+          className="input input-bordered w-full max-w-xs"
+        />
+        <button
+          className="btn btn-primary"
           disabled={loading}
           onClick={login}>
           {loading ? '...' : 'Sign In'}
-        </Button>
-        {/*user ? (<span className="ml-auto font-bold">{user.username} has signed in</span>) : (<></>)*/}
-        <Snackbar
-          open={open}
-          autoHideDuration={3000}
-          onClose={() => setOpen(false)}
-          message="Login failed: Check your username and password"
-        />
-      </Stack>
+        </button>
+        {/* 根据showAlert的值决定是否显示警告 */}
+        {
+          showAlert ?
+          <Alert
+            alertType="error"
+            message="Invalid username or password"
+            duration={3000}
+            open={showAlert}
+            onClose={() => {setShowAlert(false)}}
+          />
+         :
+          <></>
+        }
     </div>
   );
 }

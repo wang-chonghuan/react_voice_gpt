@@ -43,6 +43,7 @@ export function MessageForm({ onSave }: Props) {
   const onSubmit = async (data: MessageBody) => {
     await onSave(data);
     dispatch(updatePromptAction(""));
+    setTextAreaValue("");
     reset(); // 提交表单后重置表单
   };
 

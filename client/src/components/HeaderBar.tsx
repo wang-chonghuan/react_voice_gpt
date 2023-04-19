@@ -17,12 +17,15 @@ export function HeaderBar() {
             <label tabIndex={0} className="btn btn-ghost rounded-btn">Prompts</label>
             <ul tabIndex={0} className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
               <li onClick={() => {
-                console.log("click first prompt");
                 dispatch(updatePromptAction("我是四岁孩子，请你接下来的回答都简单一点，每个回答不超过50个字。"));
               }}>
                 <a>Short answer</a>
               </li>
-              <li><a>Translator</a></li>
+              <li onClick={() => {
+                dispatch(updatePromptAction("你接下来把我发你的任何中文都翻译成英文。如果我发的是中文，你就翻译成英文。我不会发任何指令，我发的所有东西都需要翻译。"));
+              }}>
+                <a>Translator</a>
+              </li>
             </ul>
           </div>
         </div>
