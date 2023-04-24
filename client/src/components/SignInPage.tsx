@@ -89,7 +89,7 @@ function SignInPage() {
   return (
     <div
       className="container flex flex-col justify-between items-center min-h-screen h-screen max-h-screen w-full">
-      <div className="max-w-xs w-full mt-10">
+      <div className="max-w-xs w-full mt-10 flex-grow">
         <figure><img src="/logo.jpg" alt="logo" className="w-full rounded-xl"/></figure>
         <div className="max-w-xs w-full mt-10 gap-y-8 flex flex-col justify-start items-center">
           <input
@@ -129,7 +129,7 @@ function SignInPage() {
           }
         </div>
       </div>
-      <footer className="p-4 bg-base-300 text-base-content mt-0 mb-0 w-full">
+      <footer className="p-4 bg-base-300 text-base-content mt-0 mb-0 w-full fixed bottom-0">
         <div className="flex flex-row gap-4 justify-center items-center">
           <a>
             <img alt="github" className="w-[24px] h-[24px]"

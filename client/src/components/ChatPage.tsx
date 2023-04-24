@@ -58,8 +58,8 @@ export function ChatPage() {
     return <div className="w-96 mx-auto mt-6">Loading ...</div>;
   }
   return (
-    <div className="flex flex-col h-screen w-full">
-      {/* Header */}
+    <div className="flex flex-col w-full h-full">
+      {/* Header*/}
       <HeaderBar/>
       {/* Scrollable Box */}
       <MessageBox msgs={msgs}/>

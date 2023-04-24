@@ -4,16 +4,30 @@ import {Provider} from "react-redux";
 import AuthProvider from "./auth/AuthProvider";
 import {store} from "./store/store";
 import {router} from "./auth/protectedRouter";
-import ChatApp from "./samples/SampleChatApp";
-import ScrollableBox from "./samples/SampleScrollableBox";
-import SampleChatPage from "./samples/SampleChatPage";
+import {useEffect, useState} from "react";
 
 function App() {
+
+  const [appHeight, setAppHeight] = useState<number>(window.innerHeight);
+  useEffect(() => {
+    const updateHeight = () => {
+      setAppHeight(window.innerHeight);
+    };
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
   return (
-    <div className="min-w-[240px] min-h-screen h-screen max-h-screen overflow-hidden">
+    <div className="w-full flex flex-col items-center justify-between"
+         style={{
+           height: `${appHeight}px`,
+         }}
+    >
       <Provider store={store}>
         <AuthProvider>
-          <div className="container flex flex-col justify-start items-center mx-auto">
+          <div className="container flex flex-col justify-start items-center mx-auto h-full">
             <RouterProvider router={router}/>
           </div>
         </AuthProvider>
